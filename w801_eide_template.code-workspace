@@ -1,0 +1,33 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "EIDE.SerialPortMonitor.BaudRate": 115200,
+        "EIDE.Toolchain.AnyGcc.ToolPrefix": "csky-elfabiv2-",
+        "files.associations": {
+            ".eideignore": "ignore",
+            "wm_include.h": "c",
+            "string.h": "c",
+            "wm_demo_console.h": "c"
+        },
+        "files.autoGuessEncoding": true,
+        "[yaml]": {
+            "editor.insertSpaces": true,
+            "editor.tabSize": 4,
+            "editor.autoIndent": "advanced"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "cl.eide",
+            "keroc.hex-fmt",
+            "xiaoyongdong.srecord",
+            "hars.cppsnippets",
+            "zixuanwang.linkerscript",
+            "redhat.vscode-yaml"
+        ]
+    }
+}

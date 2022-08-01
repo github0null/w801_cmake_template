@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "beforeBuildTasks": [],
+    "afterBuildTasks": [
+        {
+            "name": "make bin",
+            "disable": false,
+            "abortAfterFailed": false,
+            "command": "\"${CompilerFolder}\\${CompilerPrefix}objcopy\" -O binary \"${OutDir}\\${TargetName}.elf\" \"${OutDir}\\${TargetName}.bin\""
+        },
+        {
+            "name": "make fls",
+            "disable": false,
+            "abortAfterFailed": false,
+            "command": "bash ./make_img.sh \"${TargetName}\" \"${OutDir}\""
+        }
+    ],
+    "global": {
+        "misc-control": "-mcpu=ck804ef -mhard-float"
+    },
+    "c/cpp-compiler": {
+        "C_FLAGS": "-c -xc -ffunction-sections -fdata-sections -O2 -g3",
+        "CXX_FLAGS": "-c -xc++ -ffunction-sections -fdata-sections -O2 -g3"
+    },
+    "asm-compiler": {
+        "ASM_FLAGS": "-c"
+    },
+    "linker": {
+        "output-format": "elf",
+        "LD_FLAGS": "-Wl,--gc-sections -Wl,--print-memory-usage -nostartfiles -Wl,-zmax-page-size=1024",
+        "LIB_FLAGS": "-lbtcontroller -lwlan -ldsp"
+    }
+}

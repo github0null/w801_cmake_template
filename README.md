@@ -6,6 +6,8 @@ HLK-W801 Vscode 项目模板，使用 eide 作为开发环境
 
 ## 安装
 
+> eide v3.8.1 已支持直接在 `Setup Utility Tools` 功能中安装 c-sky 编译器，无需手动下载安装
+
 - 下载并解压编译器至某目录，并将 **csky-elfabiv2-gcc.exe** 路径**设置到系统环境变量**: [csky-elfabiv2-tools-mingw-minilibc-20210423.7z](https://cloud.github0null.io/api/v3/file/get/712/csky-elfabiv2-tools-mingw-minilibc-20210423.7z?sign=VIVH_bCv-_Han_BnRua9DA5DRmdjsVIavFEqryVnVqI%3D%3A0)
 
 - 在 VSCode 中打开插件商店，搜索并安装 **Embedded IDE (eide)**

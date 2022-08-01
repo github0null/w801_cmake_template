@@ -22,7 +22,7 @@ version: '1.0'
 #
 files:
 #   './test/**/*.c': --c99
-    '**/dhcp_*.c': -Os
+    #'platform/**/*.c': -O0
 
 #
 # for source files with virtual paths

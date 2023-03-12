@@ -40,4 +40,4 @@ echo file: $firmware
 echo port: $port
 echo --------------------------------------------
 
-../tools/W800/wm_tool.exe -dl "$firmware" -ws 2M -ds 2M -rs at -c $port -sl str -ws 115200
+../tools/W800/wm_tool.exe -dl "$firmware" -ws 2M -ds 2M -rs rts -c $port -sl str -ws 115200

@@ -1,0 +1,85 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "setup tools for win32",
+            "command": "./setup.bat",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "build (Debug)",
+            "command": "cd ./build; ninja",
+            "group": "build",
+            "dependsOn": [
+                "configure (Debug)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "build (Release)",
+            "command": "cd ./build; ninja",
+            "group": "build",
+            "dependsOn": [
+                "configure (Release)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "configure (Debug)",
+            "command": "cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -S. -B./build -G Ninja",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "configure (Release)",
+            "command": "cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -S. -B./build -G Ninja",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "flash (auto)",
+            "command": "./flash_firmware.sh",
+            "group": "build",
+            "options": {
+                "shell": {
+                    "executable": "${workspaceFolder}/tools/msys/bin/bash.exe"
+                },
+                "cwd": "./bin"
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "flash (select serialport)",
+            "command": "./flash_firmware.sh",
+            "group": "build",
+            "options": {
+                "shell": {
+                    "executable": "${workspaceFolder}/tools/msys/bin/bash.exe",
+                },
+                "cwd": "./bin",
+                "env": {
+                    "FLASH_PORT": "${input:SerialPortName}"
+                }
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "SerialPortName",
+            "type": "promptString",
+            "default": "COM",
+            "description": "Input serialport name, like: COM3"
+        }
+    ]
+}

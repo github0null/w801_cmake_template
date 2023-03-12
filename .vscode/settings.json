@@ -1,0 +1,11 @@
+{
+    "makefile.extensionOutputFolder": ".makefile-tools",
+    "files.autoGuessEncoding": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "C_Cpp.default.compilerPath": "csky-elfabiv2-gcc.exe",
+    "C_Cpp.default.intelliSenseMode": "gcc-arm",
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    }
+}

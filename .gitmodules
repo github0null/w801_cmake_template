@@ -1,0 +1,6 @@
+[submodule "cmake"]
+	path = cmake
+	url = git@github.com:github0null/cmake_embedded_project_rules.git
+[submodule "sdk"]
+	path = sdk
+	url = git@github.com:github0null/w800_cmake_sdk.git

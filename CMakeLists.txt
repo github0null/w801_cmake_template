@@ -47,6 +47,10 @@ add_executable(${CMAKE_PROJECT_NAME}
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     )
 
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+    "-Wno-implicit-function-declaration"
+    "-Wno-unused-function")
+
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
     -nostartfiles
     -Wl,-zmax-page-size=1024

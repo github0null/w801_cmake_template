@@ -33,18 +33,20 @@ endforeach()
 include(${PROJECT_BINARY_DIR}/sdk/sdk_conf.cmake)
 
 #
-# user sources
-#   1. Put your 'FileLists.cmake' in folder 'src' and include it
-#   2. In 'FileLists.cmake', put your source files in to '${USER_C_SRCS}' or '${USER_ASM_SRCS}'
+# user executable target
 #
 
-include(${CMAKE_SOURCE_DIR}/src/FileLists.cmake)
+file(GLOB_RECURSE USER_C_SRCS LIST_DIRECTORIES false RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "src/*.c")
 
 add_executable(${CMAKE_PROJECT_NAME}
     ${USER_C_SRCS}
     ${USER_ASM_SRCS})
 
-target_link_options(${CMAKE_PROJECT_NAME} PRIVATE 
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    )
+
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
     -nostartfiles
     -Wl,-zmax-page-size=1024
     -T "${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld"

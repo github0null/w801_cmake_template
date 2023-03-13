@@ -7,6 +7,7 @@ set(MCU_ARCH_TYPE "ck804ef")
 # Include toolchain config
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/toolchain/${COMPILER_TYPE}/${MCU_ARCH_TYPE}.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/utils/kconfig.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/utils/utils.cmake)
 
 # Set up the project
 project("w801"
@@ -57,6 +58,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE w800sdk)
 
 set_target_properties(${CMAKE_PROJECT_NAME} 
     PROPERTIES LINK_DEPENDS ${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld)
+
+# this func call make __FILE__ macro use relative path for every source files
+use_repath_for_macro__FILE__(${CMAKE_PROJECT_NAME})
 
 #
 # make output files

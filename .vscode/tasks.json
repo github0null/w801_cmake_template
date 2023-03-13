@@ -5,30 +5,29 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "setup tools for win32",
-            "command": "./setup.bat",
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "type": "shell",
             "label": "build (Debug)",
-            "command": "cd ./build; ninja",
+            "command": "ninja",
             "group": "build",
             "dependsOn": [
                 "configure (Debug)"
             ],
-            "problemMatcher": []
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
         },
         {
             "type": "shell",
             "label": "build (Release)",
-            "command": "cd ./build; ninja",
+            "command": "ninja",
             "group": "build",
             "dependsOn": [
                 "configure (Release)"
             ],
-            "problemMatcher": []
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
         },
         {
             "type": "shell",
@@ -49,29 +48,37 @@
             "label": "flash (auto)",
             "command": "./flash_firmware.sh",
             "group": "build",
+            "problemMatcher": [],
             "options": {
-                "shell": {
-                    "executable": "${workspaceFolder}/tools/msys/bin/bash.exe"
-                },
                 "cwd": "./bin"
             },
-            "problemMatcher": []
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "${workspaceFolder}/tools/msys/bin/bash.exe"
+                    }
+                }
+            }
         },
         {
             "type": "shell",
             "label": "flash (select serialport)",
             "command": "./flash_firmware.sh",
             "group": "build",
+            "problemMatcher": [],
             "options": {
-                "shell": {
-                    "executable": "${workspaceFolder}/tools/msys/bin/bash.exe",
-                },
                 "cwd": "./bin",
                 "env": {
                     "FLASH_PORT": "${input:SerialPortName}"
                 }
             },
-            "problemMatcher": []
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "${workspaceFolder}/tools/msys/bin/bash.exe",
+                    }
+                }
+            }
         }
     ],
     "inputs": [

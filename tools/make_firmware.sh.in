@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ ! "@MSYS_BIN_REPATH@"x = "x" ]; then
-  export PATH=@MSYS_BIN_REPATH@:$PATH
+if [ ! "@MSYS_BIN_PATH_FOR_BUILD_DIR@"x = "x" ]; then
+  export PATH=@MSYS_BIN_PATH_FOR_BUILD_DIR@:$PATH
 fi
 
 TOP_DIR=..

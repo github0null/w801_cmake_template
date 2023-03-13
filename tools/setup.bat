@@ -1,7 +1,10 @@
 @echo off
 
-.\tools\7z\7za.exe x -y -r -aoa -o./tools ./tools/w800/toolchain/msys.7z
+set CHECK_PATH=.\tools\msys\bin
 
-echo "==============================="
-echo "[SUCCESS] All done !"
-echo "==============================="
+IF NOT EXIST %CHECK_PATH% (
+    .\tools\7z\7za.exe x -y -r -aoa -o./tools ./tools/w800/toolchain/msys.7z
+    echo - setup msys done !
+) else (
+    echo - found msys !, path: %CHECK_PATH%
+)

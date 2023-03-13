@@ -60,14 +60,13 @@ set_target_properties(${CMAKE_PROJECT_NAME}
 
 # setup msys
 if(CMAKE_HOST_WIN32)
-    set(MSYS_BIN_REPATH ../tools/msys/bin)
-    if(NOT EXISTS "${PROJECT_SOURCE_DIR}/tools/msys/bin")
-        add_custom_command(TARGET ${CMAKE_PROJECT_NAME} PRE_LINK
-            COMMAND ${CMAKE_COMMAND} -E echo "setup msys for win32 ..."
-            COMMAND ${PROJECT_SOURCE_DIR}/tools/setup.bat
-            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-            VERBATIM)
-    endif()
+    file(RELATIVE_PATH MSYS_BIN_PATH_FOR_BUILD_DIR ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/tools/msys/bin)
+    message(STATUS "Insert msys setup command for win32")
+    add_custom_command(TARGET ${CMAKE_PROJECT_NAME} PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E echo "check and setup msys for win32 ..."
+        COMMAND ${PROJECT_SOURCE_DIR}/tools/setup.bat
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        VERBATIM)
 endif()
 
 # make firmware

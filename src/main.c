@@ -12,9 +12,10 @@ void UserMain(void)
     tls_sys_clk sys_clk;
     tls_sys_clk_get(&sys_clk);
 
-    log_i(" - cpu  freq: %d MHz", sys_clk.cpuclk);
-    log_i(" - apb  freq: %d MHz", sys_clk.apbclk);
-    log_i(" - wlan freq: %d MHz", sys_clk.wlanclk);
+    log_i(" - sdk version: v%s", w800sdk_get_version_string());
+    log_i(" - cpu    freq: %d MHz", sys_clk.cpuclk);
+    log_i(" - apb    freq: %d MHz", sys_clk.apbclk);
+    log_i(" - wlan   freq: %d MHz", sys_clk.wlanclk);
 
     log_i("------------------------------------");
 

@@ -34,13 +34,15 @@ include(${PROJECT_BINARY_DIR}/sdk/sdk_conf.cmake)
 
 #
 # user sources
+#   1. Put your 'FileLists.cmake' in folder 'src' and include it
+#   2. In 'FileLists.cmake', put your source files in to '${USER_C_SRCS}' or '${USER_ASM_SRCS}'
 #
 
-file(GLOB_RECURSE USER_C_SRCS LIST_DIRECTORIES false RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "src/*.c")
+include(${CMAKE_SOURCE_DIR}/src/FileLists.cmake)
 
 add_executable(${CMAKE_PROJECT_NAME}
-    ${USER_C_SRCS})
+    ${USER_C_SRCS}
+    ${USER_ASM_SRCS})
 
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE 
     -nostartfiles

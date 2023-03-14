@@ -18,9 +18,9 @@ zip_type=1
 sec_img_header=8002000
 sec_img_pos=8002400
 
-run_img_header=@CONFIG_W800_IMAGE_HEADER@
-run_img_pos=@CONFIG_W800_RUN_ADDRESS@
-upd_img_pos=@CONFIG_W800_UPDATE_ADDRESS@
+run_img_header=@CONFIG_W800_IMAGE_HEADER_ADDR@
+run_img_pos=@CONFIG_W800_IMAGE_APP_ADDR@
+upd_img_pos=@CONFIG_W800_IMAGE_OTA_ADDR@
 
 if [ $prikey_sel -gt 0 ]
  then
@@ -42,14 +42,19 @@ if [ $sign_pubkey_src -eq 1 ]
   let img_type=$img_type+512
 fi
 
-echo "image type: $img_type"
+echo " - image type     : $img_type"
+echo " - signature      : $signature"
+echo " - prikey_sel     : $prikey_sel"
+echo " - code_encrypt   : $code_encrypt"
+echo " - code_encrypt_k : @CONFIG_W800_CODE_ENCRYPT_KEY@"
+echo " - sign_pubkey_src: $sign_pubkey_src"
 
 csky-elfabiv2-objcopy -O binary ./"$ProjName".elf ./"$ProjName".bin
 
 if [ $code_encrypt -eq 1 ]
  then
   let prikey_sel=$prikey_sel+1
-  openssl enc -aes-128-ecb -in ./"$ProjName".bin -out ./"$ProjName"_enc.bin -K 30313233343536373839616263646566 -iv 01010101010101010101010101010101
+  openssl enc -aes-128-ecb -in ./"$ProjName".bin -out ./"$ProjName"_enc.bin -K @CONFIG_W800_CODE_ENCRYPT_KEY@ -iv 01010101010101010101010101010101
   openssl rsautl -encrypt -in ${TOP_DIR}/tools/w800/ca/key.txt -inkey ${TOP_DIR}/tools/w800/ca/capub_"$prikey_sel".pem -pubin -out key_en.dat
   cat "$ProjName"_enc.bin key_en.dat > "$ProjName"_enc_key.bin
   cat "$ProjName"_enc_key.bin ${TOP_DIR}/tools/w800/ca/capub_"$prikey_sel"_N.dat > "$ProjName"_enc_key_N.bin  

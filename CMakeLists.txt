@@ -51,17 +51,27 @@ target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
     "-Wno-implicit-function-declaration"
     "-Wno-unused-function")
 
+configure_file("${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld.in" "${CMAKE_BINARY_DIR}/gcc_csky.ld" @ONLY)
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
     -nostartfiles
     -Wl,-zmax-page-size=1024
-    -T "${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld"
+    -T "${CMAKE_BINARY_DIR}/gcc_csky.ld"
     -Wl,-ckmap=${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.map
     -lm)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE w800sdk)
 
-set_target_properties(${CMAKE_PROJECT_NAME} 
-    PROPERTIES LINK_DEPENDS ${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld)
+set(LINK_DEPS "${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld.in")
+
+if(EXISTS ${PROJECT_SOURCE_DIR}/sdk.conf)
+    list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/sdk.conf)
+else()
+    list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/sdk/sdk.conf)
+endif()
+
+list(JOIN LINK_DEPS ";" LINK_DEPS_STR)
+message(STATUS "link deps: ${LINK_DEPS_STR}")
+set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_DEPENDS "${LINK_DEPS_STR}")
 
 # this func call make __FILE__ macro use relative path for every source files
 use_repath_for_macro__FILE__(${CMAKE_PROJECT_NAME})
@@ -85,7 +95,7 @@ endif()
 configure_file("${PROJECT_SOURCE_DIR}/tools/make_firmware.sh.in" "${CMAKE_BINARY_DIR}/make_firmware.sh" @ONLY)
 configure_file("${PROJECT_SOURCE_DIR}/tools/flash_firmware.sh.in" "${PROJECT_SOURCE_DIR}/bin/flash_firmware.sh" @ONLY)
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "=== make firmware ... ==="
+    COMMAND ${CMAKE_COMMAND} -E echo "Make firmware ..."
     COMMAND ${PROJECT_SOURCE_DIR}/tools/msys/bin/bash "${CMAKE_BINARY_DIR}/make_firmware.sh"
     DEPENDS ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.elf
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

@@ -14,6 +14,9 @@ project("w801"
     VERSION "0.1.0"
     LANGUAGES C ASM CXX)
 
+# Set w800sdk dir path
+set(W800_SDK_DIR "sdk")
+
 # Redirect static lib path
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY          ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG    ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
@@ -31,7 +34,7 @@ foreach(file_name ${sub_files})
     endif()
 endforeach()
 
-include(${PROJECT_BINARY_DIR}/sdk/sdk_conf.cmake)
+include(${PROJECT_BINARY_DIR}/${W800_SDK_DIR}/sdk_conf.cmake)
 
 #
 # user executable target
@@ -51,7 +54,7 @@ target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
     "-Wno-implicit-function-declaration"
     "-Wno-unused-function")
 
-configure_file("${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld.in" "${CMAKE_BINARY_DIR}/gcc_csky.ld" @ONLY)
+configure_file("${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/ld/w800/gcc_csky.ld.in" "${CMAKE_BINARY_DIR}/gcc_csky.ld" @ONLY)
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
     -nostartfiles
     -Wl,-zmax-page-size=1024
@@ -61,12 +64,12 @@ target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE w800sdk)
 
-set(LINK_DEPS "${PROJECT_SOURCE_DIR}/sdk/ld/w800/gcc_csky.ld.in")
+set(LINK_DEPS "${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/ld/w800/gcc_csky.ld.in")
 
 if(EXISTS ${PROJECT_SOURCE_DIR}/sdk.conf)
     list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/sdk.conf)
 else()
-    list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/sdk/sdk.conf)
+    list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/sdk.conf)
 endif()
 
 list(JOIN LINK_DEPS ";" LINK_DEPS_STR)

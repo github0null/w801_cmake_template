@@ -14,8 +14,9 @@ project("w801"
     VERSION "0.1.0"
     LANGUAGES C ASM CXX)
 
-# Set w800sdk dir path
+# Set up w800 sdk
 set(W800_SDK_DIR "sdk")
+#set(W800_SDK_CONF_PATH "${CMAKE_CURRENT_LIST_DIR}/w800sdk.conf")
 
 # Redirect static lib path
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY          ${CMAKE_BINARY_DIR}/lib)

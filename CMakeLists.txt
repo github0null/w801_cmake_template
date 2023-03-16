@@ -16,7 +16,7 @@ project("w801"
 
 # Set up w800 sdk
 set(W800_SDK_DIR "sdk")
-#set(W800_SDK_CONF_PATH "${CMAKE_CURRENT_LIST_DIR}/w800sdk.conf")
+set(W800_SDK_CONF_PATH "${CMAKE_CURRENT_LIST_DIR}/w800sdk.conf")
 
 # Redirect static lib path
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY          ${CMAKE_BINARY_DIR}/lib)
@@ -35,7 +35,7 @@ foreach(file_name ${sub_files})
     endif()
 endforeach()
 
-include(${PROJECT_BINARY_DIR}/${W800_SDK_DIR}/sdk_conf.cmake)
+include("${PROJECT_BINARY_DIR}/${W800_SDK_DIR}/w800sdk_conf.cmake")
 
 #
 # user executable target
@@ -67,8 +67,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE w800sdk)
 
 set(LINK_DEPS "${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/ld/w800/gcc_csky.ld.in")
 
-if(EXISTS ${PROJECT_SOURCE_DIR}/sdk.conf)
-    list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/sdk.conf)
+if(DEFINED W800_SDK_CONF_PATH)
+    list(APPEND LINK_DEPS ${W800_SDK_CONF_PATH})
 else()
     list(APPEND LINK_DEPS ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/sdk.conf)
 endif()

@@ -3,7 +3,7 @@
 
 #include "main.h"
 
-void UserMain(void)
+void UserMain(void *task_handle_ptr)
 {
     log_i("------------------------------------");
     log_i("app launched !");

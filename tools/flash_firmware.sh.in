@@ -13,8 +13,8 @@ COLOR_ERR="\e[31;1m"
 COLOR_END="\e[0m"
 
 if [ x"$port" == x"" ]; then
-    
-    pList=(`../tools/W800/wm_tool.exe -l`)
+
+    pList=(`./wm_tool -l`)
 
     if [ ${#pList[@]} == 0 ]; then
         echo -e ""
@@ -40,4 +40,4 @@ echo file: $firmware
 echo port: $port
 echo --------------------------------------------
 
-wm_tool -dl "$firmware" -ws 2M -ds 2M -rs rts -c $port -sl str -ws 115200
+./wm_tool -dl "$firmware" -ws 2M -ds 2M -rs rts -c $port -sl str -ws 115200

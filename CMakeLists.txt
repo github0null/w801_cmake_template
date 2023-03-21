@@ -65,7 +65,7 @@ target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE w800sdk)
 
-set(LINK_DEPS 
+set(LINK_DEPS
     "${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/ld/w800/gcc_csky.ld.in"
     "${PROJECT_SOURCE_DIR}/tools/make_firmware.sh.in")
 

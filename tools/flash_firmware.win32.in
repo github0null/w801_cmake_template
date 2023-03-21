@@ -1,0 +1,25 @@
+@echo off
+
+:: cd work dir
+@w800_FLASHER_WIN32_CD_CMD@
+
+set firmware=.\@CMAKE_PROJECT_NAME@.fls
+
+if "%1"=="" (
+    if "%FLASH_PORT%"=="" (
+        set /p port=Input SerialPort:
+    ) else (
+        set port=%FLASH_PORT%
+    )
+) else (
+    set port=%1
+)
+
+echo --------------------------------------------
+echo file: '%firmware%'
+echo port: '%port%'
+echo --------------------------------------------
+
+wm_tool -dl "%firmware%" -ws 2M -ds 2M -rs rts -c %port% -sl str -ws 115200
+
+pause

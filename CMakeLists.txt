@@ -86,16 +86,22 @@ use_repath_for_macro__FILE__(${CMAKE_PROJECT_NAME})
 # make output files
 #
 
+if(CMAKE_HOST_WIN32)
+    set(EXE_SUFFIX ".exe")
+endif()
+
 set(FIRMWARE_OUT_DIR_NAME bin)
+set(FIRMWARE_FLASHER_TOOL ${PROJECT_SOURCE_DIR}/${FIRMWARE_OUT_DIR_NAME}/wm_tool${EXE_SUFFIX})
+set(FIRMWARE_BASH_SHELL   bash)
 
 # setup msys
 if(CMAKE_HOST_WIN32)
-    set(WIN32_MSYS msys)
+    set(WIN32_MSYS_BASH ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/msys/bin/bash.exe)
+    set(FIRMWARE_BASH_SHELL ${WIN32_MSYS_BASH})
     file(RELATIVE_PATH MSYS_BIN_PATH_FOR_BUILD_DIR ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/msys/bin)
-    add_custom_target(${WIN32_MSYS}
+    add_custom_command(OUTPUT ${WIN32_MSYS_BASH}
         COMMAND ${CMAKE_COMMAND} -E echo "Setup msys for win32 ..."
-        COMMAND ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/setup.bat
-        COMMAND ${CMAKE_COMMAND} -E echo "Setup msys for win32 done !"
+        COMMAND ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/setup_msys.bat
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}
         VERBATIM)
 endif()
@@ -105,27 +111,25 @@ set(W800_TOOLS_DIR ${W800_SDK_DIR}/tools)
 configure_file("${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/make_firmware.sh.in" "${PROJECT_BINARY_DIR}/make_firmware.sh" @ONLY)
 add_custom_target("${CMAKE_PROJECT_NAME}.fls"
     COMMAND ${CMAKE_COMMAND} -E echo "Make firmware ..."
-    COMMAND ${PROJECT_SOURCE_DIR}/${W800_SDK_DIR}/tools/msys/bin/bash "${PROJECT_BINARY_DIR}/make_firmware.sh"
-    COMMAND ${CMAKE_COMMAND} -E echo "Output Firmware: '${PROJECT_SOURCE_DIR}/${FIRMWARE_OUT_DIR_NAME}/${CMAKE_PROJECT_NAME}.fls'"
+    COMMAND ${FIRMWARE_BASH_SHELL} "${PROJECT_BINARY_DIR}/make_firmware.sh"
+    COMMAND ${CMAKE_COMMAND} -E echo "Firmware path: '${PROJECT_SOURCE_DIR}/${FIRMWARE_OUT_DIR_NAME}/${CMAKE_PROJECT_NAME}.fls'"
     BYPRODUCTS "${PROJECT_SOURCE_DIR}/${FIRMWARE_OUT_DIR_NAME}/${CMAKE_PROJECT_NAME}.fls"
-    DEPENDS ${CMAKE_PROJECT_NAME} ${WIN32_MSYS} "${CMAKE_PROJECT_NAME}.flasher"
+    DEPENDS ${CMAKE_PROJECT_NAME} ${WIN32_MSYS_BASH} ${FIRMWARE_FLASHER_TOOL}
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
     VERBATIM)
 
 # make flasher tools
 if(CMAKE_HOST_WIN32)
-    add_custom_target("${CMAKE_PROJECT_NAME}.flasher"
+    add_custom_command(OUTPUT ${FIRMWARE_FLASHER_TOOL}
         COMMAND ${CMAKE_COMMAND} -E echo "Make flasher tools ..."
         COMMAND xcopy ".\\${W800_SDK_DIR}\\tools\\w800\\wm_tool.exe" ".\\${FIRMWARE_OUT_DIR_NAME}\\" /H /Y > nul
-        COMMAND ${CMAKE_COMMAND} -E echo "Make flasher tools done !"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         VERBATIM)
 elseif(CMAKE_HOST_UNIX)
-    add_custom_target("${CMAKE_PROJECT_NAME}.flasher"
+    add_custom_command(OUTPUT ${FIRMWARE_FLASHER_TOOL}
         COMMAND ${CMAKE_COMMAND} -E echo "Make flasher tools ..."
-        COMMAND gcc -O2 -lpthread -o "./${FIRMWARE_OUT_DIR_NAME}/wm_tool" "./${W800_SDK_DIR}/tools/w800/wm_tool.c"
-        COMMAND chmod +x "./${FIRMWARE_OUT_DIR_NAME}/wm_tool"
-        COMMAND ${CMAKE_COMMAND} -E echo "Make flasher tools done !"
+        COMMAND gcc -O2 -lpthread -o "${FIRMWARE_FLASHER_TOOL}" "./${W800_SDK_DIR}/tools/w800/wm_tool.c"
+        COMMAND chmod +x "${FIRMWARE_FLASHER_TOOL}"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         VERBATIM)
 endif()

@@ -18,7 +18,7 @@ HLK-W801 Vscode 项目模板，使用 `VSCode + CMake + Ninja` 构建
 
 - 安装 csky 编译器（系统中已安装则可忽略该步骤）：
 
-  - 打开工程的目录：`tools/w800/toolchain/`
+  - 打开工程的目录：`sdk/tools/w800/toolchain/`
 
   - 将 `csky-elfabiv2-tools-mingw-minilibc-20210423.7z` 编译器解压，将解压后的目录移动到你的磁盘其他位置上
 

@@ -55,7 +55,7 @@
             "windows": {
                 "options": {
                     "shell": {
-                        "executable": "${workspaceFolder}/tools/msys/bin/bash.exe"
+                        "executable": "${workspaceFolder}/sdk/tools/msys/bin/bash.exe"
                     }
                 }
             }
@@ -75,7 +75,7 @@
             "windows": {
                 "options": {
                     "shell": {
-                        "executable": "${workspaceFolder}/tools/msys/bin/bash.exe",
+                        "executable": "${workspaceFolder}/sdk/tools/msys/bin/bash.exe",
                     }
                 }
             }
